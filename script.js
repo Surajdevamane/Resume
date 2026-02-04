@@ -1,32 +1,39 @@
 const form = document.getElementById('contactForm');
 const formMessage = document.getElementById('formMessage');
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const formData = new FormData(form);
+// Run only if form exists (index.html)
+if (form && formMessage) {
 
-  try {
-    const response = await fetch(form.action, {
-      method: form.method,
-      body: formData,
-      headers: { 'Accept': 'application/json' }
-    });
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
 
-    if (response.ok) {
-      formMessage.textContent = "Message sent successfully!";
-      formMessage.style.color = "green";
-      form.reset();
-    } else {
-      formMessage.textContent = "Something went wrong.";
+    try {
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        formMessage.textContent = "Message sent successfully!";
+        formMessage.style.color = "green";
+        form.reset();
+      } else {
+        formMessage.textContent = "Something went wrong.";
+        formMessage.style.color = "red";
+      }
+
+    } catch {
+      formMessage.textContent = "Network error.";
       formMessage.style.color = "red";
     }
-  } catch {
-    formMessage.textContent = "Network error.";
-    formMessage.style.color = "red";
-  }
 
-  formMessage.classList.remove('hidden');
-});
+    formMessage.classList.remove('hidden');
+  });
+
+}
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
